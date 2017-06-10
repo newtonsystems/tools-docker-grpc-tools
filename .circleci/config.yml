@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Clone devops repo (Update the submodule to the latest change)
           command: |
-            git clone -b $CIRCLE_BRANCH https://github.com/newtonsystems/devops.git
+            git clone -b $CIRCLE_BRANCH git@github.com:newtonsystems/devops.git
             cd devops
             git submodule sync
             git submodule update --init
