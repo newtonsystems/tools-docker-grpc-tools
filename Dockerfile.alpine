@@ -1,0 +1,80 @@
+#
+# newtonsystems/tools/docker-grpc-tools
+#
+#
+# A Docker Image for generating grpc service for multiple languages
+#
+# Please README.md for how to run this Docker Container
+#
+# To be used with circleci for ci:
+#     This docker image must be PUBLIC: 
+
+#
+# THIS IS CURRENTLY BROKEN (WILL WAIT FOR FIXES)
+#
+
+
+# Our aim to make this image as small as possible
+# We use alpine over Debian as its only 5MB
+FROM alpine:3.5 
+MAINTAINER James Tarball <james.tarball@newtonsystems.co.uk>
+
+# Add Label Badges to Dockerfile powered by microbadger
+ARG VCS_REF
+
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling"
+
+RUN apk add --update --virtual .build-deps \
+        curl \
+        python \
+        python-dev \
+        py-pip \
+        build-base \
+        git \
+        musl-dev \
+        linux-headers \
+        make \
+        gcc \
+        g++ \
+        autoconf \
+        automake \
+        libtool \
+    && rm -rf /var/cache/apk/*
+
+# Install grpc (should install protoc as well)
+# Install Proto Buffer version 3
+#RUN git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc && \
+#    cd grpc && \
+#    git submodule update --init && \
+#    make && \
+#    make install
+
+RUN git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc && \
+    cd grpc && \
+    git submodule update --init && \
+    pip install -r requirements.txt && \
+    GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip install --no-cache-dir .
+
+#RUN git clone -b v1.1.x https://github.com/caussourd/grpc \
+#    && cd grpc \
+#    && git submodule update --init \
+#    && pip install -r requirements.txt \
+#    && GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip install --no-cache-dir .
+
+# install other required libraries
+RUN pip install --no-cache-dir grpcio-tools==1.0.4
+
+# Clean Up
+RUN rm -rf grpc && \
+    apk del .build-deps
+
+# Basic Check grpc tools can be run
+RUN python2 -m grpc_tools.protoc --version
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+#
+# Circle CI 2.0 Docs
+# 
+# For info, see: https://circleci.com/docs/2.0/
+#
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:1.13.1-git
+        environment:
+          DOCKER_PROJECT_NAME: tools-docker-grpc-tools
+    working_directory: ~/tools-docker-grpc-tools
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Clone devops repo (Update the submodule to the latest change)
+          command: |
+            git clone -b $CIRCLE_BRANCH https://github.com/newtonsystems/devops.git
+            cd devops
+            git submodule sync
+            git submodule update --init
+            git submodule foreach git pull origin $CIRCLE_BRANCH
+
+      - run:
+          name: Build & Push to Docker Hub (branch and latest (sync'd to master)) 
+          command: |
+            docker build -t newtonsystems/$DOCKER_PROJECT_NAME:$CIRCLE_BRANCH .
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push newtonsystems/$DOCKER_PROJECT_NAME:$CIRCLE_BRANCH
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                docker tag newtonsystems/$DOCKER_PROJECT_NAME:$CIRCLE_BRANCH newtonsystems/$DOCKER_PROJECT_NAME:latest
+                docker push newtonsystems/$DOCKER_PROJECT_NAME:latest
+            fi
+
+      - deploy:
+          name: Push Update of Git Submodule for devops repo
+          command: |
+              git config --global user.email "$GITHUB_EMAIL" > /dev/null 2>&1
+              git config --global user.name "$GITHUB_USERNAME" > /dev/null 2>&1
+              cd devops
+              # Only Commit & Push if there are changes
+              if [[ `git status --porcelain` ]]; then
+                  git add -A
+                  git commit --allow-empty -m "[ci skip] Updating submodule: Auto commit for `cd ~/tools-docker-grpc-tools && git log -1 --pretty=short --abbrev-commit`"
+                  git push origin $CIRCLE_BRANCH
+              fi
