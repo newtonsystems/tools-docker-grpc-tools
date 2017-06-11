@@ -29,6 +29,25 @@ RUN apt-get -yq update && apt-get -yq install \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Latest Docker
+RUN apt-get -yq update && apt-get -yq install \
+    apt-transport-https \
+    ca-certificates \
+    gnupg2 \
+    software-properties-common && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+
+RUN add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/debian \ 
+    $(lsb_release -cs) \
+    stable"
+
+RUN apt-get -yq update && apt-get -yq install docker-ce
+
+
 # Install grpc (should install protoc as well)
 # Install Proto Buffer version 3
 # NOTE: We select the latest release (potentially risky but oh well...)
