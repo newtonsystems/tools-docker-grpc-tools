@@ -50,7 +50,7 @@ RUN apt-get -yq update && apt-get -yq install docker-ce
 # Install kube-ctl
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 RUN chmod +x ./kubectl
-RUN sudo mv ./kubectl /usr/local/bin/kubectl
+RUN mv ./kubectl /usr/local/bin/kubectl
 
 
 # Install grpc (should install protoc as well)
