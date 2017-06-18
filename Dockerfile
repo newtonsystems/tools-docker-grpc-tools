@@ -65,6 +65,18 @@ RUN git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc 
     make && make install && make clean && \
     rm -rf /tmp/grpc
 
+# Install go
+RUN curl -O https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.8.3.linux-amd64.tar.gz
+
+# Add to go path 
+ENV GOPATH /go
+ENV GOROOT /usr/local/go
+ENV PATH /usr/local/go/bin:$GOPATH/bin:/usr/local/bin:$PATH
+
+# Install protoc-gen-go
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
+
 # Basic check
 RUN protoc --version
 
