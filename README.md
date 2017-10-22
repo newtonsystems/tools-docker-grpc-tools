@@ -1,14 +1,14 @@
 # docker-grpc-tools
 
-[![](https://images.microbadger.com/badges/image/newtonsystems/tools-docker-grpc-tools:0.2.3.svg)](https://microbadger.com/images/newtonsystems/tools-docker-grpc-tools:0.2.3 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/newtonsystems/tools-docker-grpc-tools:0.2.4.svg)](https://microbadger.com/images/newtonsystems/tools-docker-grpc-tools:0.2.4 "Get your own image badge on microbadger.com")
 
-[![](https://images.microbadger.com/badges/version/newtonsystems/tools-docker-grpc-tools:0.2.3.svg)](https://microbadger.com/images/newtonsystems/tools-docker-grpc-tools:0.2.3 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/newtonsystems/tools-docker-grpc-tools:0.2.4.svg)](https://microbadger.com/images/newtonsystems/tools-docker-grpc-tools:0.2.4 "Get your own version badge on microbadger.com")
 
 Available from docker hub as [newtonsystems/tools/docker-grpc-tools](https://hub.docker.com/r/newtonsystems/tools-docker-grpc-tools/)
 
 #### Supported tags and respective `Dockerfile` links
 
--    [`v0.2.3`, `v0.2.2`, `v0.2.1`, `v0.2.0`, `latest` (/Dockerfile*)](https://github.com/newtonsystems/devops/blob/master/tools/docker-grpc-tools/Dockerfile)
+-    [`v0.2.4`, `v0.2.3`, `v0.2.2`, `v0.2.1`, `v0.2.0`, `latest` (/Dockerfile*)](https://github.com/newtonsystems/devops/blob/master/tools/docker-grpc-tools/Dockerfile)
 
 # What is docker-grpc-tools?
 
@@ -29,7 +29,7 @@ jobs:
 
 
 ## How to do a release
-- Make sure you are using docker-utils 
+- Make sure you are using docker-utils
 i.e.
 
 ```bash
