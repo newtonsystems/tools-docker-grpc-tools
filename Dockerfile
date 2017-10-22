@@ -6,7 +6,7 @@
 # Please README.md for how to run this Docker Container
 #
 # To be used with circleci for ci:
-#     This docker image must be PUBLIC: 
+#     This docker image must be PUBLIC:
 
 From debian:jessie
 MAINTAINER James Tarball <james.tarball@newtonsystems.co.uk>
@@ -15,7 +15,11 @@ MAINTAINER James Tarball <james.tarball@newtonsystems.co.uk>
 ARG VCS_REF
 
 LABEL org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling" 
+      org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling"
+
+# Add Mongo Repo Key
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+    echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 
 # Packages
 RUN apt-get -yq update && apt-get -yq install \
@@ -25,6 +29,7 @@ RUN apt-get -yq update && apt-get -yq install \
     python-dev \
     python \
     python-pip \
+    mongodb-org \
     pkg-config && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -41,7 +46,7 @@ RUN apt-get -yq update && apt-get -yq install \
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 
 RUN add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/debian \ 
+    "deb [arch=amd64] https://download.docker.com/linux/debian \
     $(lsb_release -cs) \
     stable"
 
@@ -69,7 +74,7 @@ RUN git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc 
 RUN curl -O https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
 RUN tar -C /usr/local -xzf go1.8.3.linux-amd64.tar.gz
 
-# Add to go path 
+# Add to go path
 ENV GOPATH /go
 ENV GOROOT /usr/local/go
 ENV PATH /usr/local/go/bin:$GOPATH/bin:/usr/local/bin:$PATH
