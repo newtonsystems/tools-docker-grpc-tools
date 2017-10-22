@@ -1,6 +1,6 @@
 #
 # Circle CI 2.0 Docs
-# 
+#
 # For info, see: https://circleci.com/docs/2.0/
 #
 
@@ -19,6 +19,8 @@ jobs:
       - run:
           name: Clone devops repo (Update the submodule to the latest change)
           command: |
+            git config --global user.email "$GITHUB_EMAIL" > /dev/null 2>&1
+            git config --global user.name "$GITHUB_USERNAME" > /dev/null 2>&1
             git clone -b $CIRCLE_BRANCH git@github.com:newtonsystems/devops.git
             cd devops
             git submodule sync
@@ -26,7 +28,7 @@ jobs:
             git submodule foreach git pull origin $CIRCLE_BRANCH
 
       - run:
-          name: Build & Push to Docker Hub (branch and latest (sync'd to master)) 
+          name: Build & Push to Docker Hub (branch and latest (sync'd to master))
           command: |
             docker build -t newtonsystems/$DOCKER_PROJECT_NAME:$CIRCLE_BRANCH .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
