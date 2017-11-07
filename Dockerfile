@@ -17,10 +17,6 @@ ARG VCS_REF
 LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling"
 
-# Add Mongo Repo Key
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-    echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-
 # Packages
 RUN apt-get -yq update && apt-get -yq install \
     build-essential autoconf libtool \
@@ -29,7 +25,6 @@ RUN apt-get -yq update && apt-get -yq install \
     python-dev \
     python \
     python-pip \
-    mongodb-org \
     pkg-config && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -86,5 +81,7 @@ RUN go get -u github.com/golang/protobuf/protoc-gen-go
 RUN protoc --version
 
 RUN pip install grpcio-tools devpi-client
+
+RUN curl https://glide.sh/get | sh
 
 CMD ["/bin/bash"]
