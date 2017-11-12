@@ -8,7 +8,7 @@
 # To be used with circleci for ci:
 #     This docker image must be PUBLIC:
 
-From debian:jessie
+FROM debian:jessie
 MAINTAINER James Tarball <james.tarball@newtonsystems.co.uk>
 
 # Add Label Badges to Dockerfile powered by microbadger
@@ -22,6 +22,7 @@ RUN apt-get -yq update && apt-get -yq install \
     build-essential autoconf libtool \
     git \
     curl \
+    wget \
     python-dev \
     python \
     python-pip \
@@ -82,6 +83,9 @@ RUN protoc --version
 
 RUN pip install grpcio-tools devpi-client
 
-RUN curl https://glide.sh/get | sh
+# Install dep (for go dependencies)
+RUN wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64 \
+  && mv dep-linux-amd64 /bin/dep \
+  && chmod +x /bin/dep
 
 CMD ["/bin/bash"]
