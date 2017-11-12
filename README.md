@@ -8,7 +8,7 @@ Available from docker hub as [newtonsystems/tools/docker-grpc-tools](https://hub
 
 #### Supported tags and respective `Dockerfile` links
 
--    [`v0.2.6`,`v0.2.5`, `v0.2.4 (avoid)`, `v0.2.3`, `v0.2.2`, `v0.2.1`, `v0.2.0`, `latest` (/Dockerfile*)](https://github.com/newtonsystems/devops/blob/master/tools/docker-grpc-tools/Dockerfile)
+-    [`v0.2.6`,`v0.2.5`, `v0.2.4 (avoid)`, `v0.2.3`, `v0.2.2`, `v0.2.1`, `v0.2.0`, `latest` (/Dockerfile*)](https://github.com/newtonsystems/tools-docker-grpc-tools/blob/master/Dockerfile)
 
 # What is docker-grpc-tools?
 
